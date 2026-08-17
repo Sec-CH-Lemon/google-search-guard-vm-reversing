@@ -1,0 +1,21 @@
+node_modules/
+
+# Captures of the Google interstitial, and anything lifted out of one, are Google's
+# copyrighted code. They stay on your machine and never enter this repository.
+challenge.html
+response*.html
+*.har
+**/captures/*
+!**/captures/.gitkeep
+**/lifted-source/*
+!**/lifted-source/.gitkeep
+
+# tool output
+*.log
+static-disassembly*.txt
+*-trace.txt
+
+# editors, OS
+.DS_Store
+.idea/
+.vscode/

@@ -1,0 +1,13 @@
+{
+  "name": "searchguard-proxy-probe",
+  "version": "1.0.0",
+  "description": "Tools accompanying Part 1: enumerating Browser API access via a JavaScript Proxy",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "probe": "node probe-proxy.js",
+    "verify": "node verify-claims.js"
+  },
+  "dependencies": { "jsdom": "^29.1.1" }
+}
