@@ -5,6 +5,7 @@ https://igorkozlowski.substack.com/p/google-searchguard-anti-bot-system
 Tooling for the first article. 
 ```bash
 npm install
+node fetch-challenge.js
 node probe-proxy.js
 ```
 
@@ -15,6 +16,19 @@ The challenge is a virtual machine, and reverse engineering it takes weeks. But 
 The interpreter installs itself with `.call(this)`, so everything it treats as "the window" is simply what it was handed at startup. Hand it a `Proxy` instead and every property read becomes visible, including reads of properties that **do not exist**, which is exactly where the automation probes live and precisely what an ordinary getter cannot catch.
 
 ## The tools
+
+### `fetch-challenge.js`: saving a capture
+
+```bash
+node fetch-challenge.js
+node fetch-challenge.js --query=weather --out=/path/to/challenge.html
+```
+
+Requests the search page with no cookies at all and writes the response to `challenge.html`. The cookieless part is the point: a browser Google already trusts gets results instead of the challenge.
+
+What came back is checked before it is kept, using the same call the other tools make, so "saved" means the capture is readable rather than merely present. A run that got results, a consent page or the `/sorry/` page says which of those happened and writes nothing. `--attempts=n` retries with `--delay=ms` between tries, and `--force` saves whatever arrived.
+
+If every attempt returns results rather than the challenge, the answer is a different IP rather than more attempts.
 
 ### `probe-proxy.js`: the access table
 

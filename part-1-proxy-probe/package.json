@@ -6,6 +6,7 @@
   "type": "commonjs",
   "engines": { "node": ">=18" },
   "scripts": {
+    "capture": "node fetch-challenge.js",
     "probe": "node probe-proxy.js",
     "verify": "node verify-claims.js"
   },

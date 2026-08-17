@@ -45,21 +45,41 @@ const FROZEN_TIME_MS = 17e11;
  * @returns {{ interpreter: string, program: string }}
  */
 function extract(htmlPath) {
+  // Every tool here starts by reading a capture, so a missing one is the first
+  // thing a new reader runs into. Say what is needed and how to get it, rather
+  // than letting an ENOENT through.
+  if (!fs.existsSync(htmlPath)) {
+    throw new Error(
+      `no capture at ${htmlPath}\n\n` +
+        'These tools read a saved copy of the interstitial page. To fetch one:\n' +
+        '  node fetch-challenge.js\n\n' +
+        'To use a capture you already have:\n' +
+        '  --html=/path/to/challenge.html',
+    );
+  }
+
   const html = fs.readFileSync(htmlPath, 'utf8');
   const scripts = [...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
 
   // The interpreter source ships as an array of strings the page joins itself.
   const bootstrap = scripts.find((s) => s.includes("].join('\\n')"));
   if (!bootstrap) throw new Error(`no interpreter script found in ${htmlPath}`);
-  const from = bootstrap.indexOf("+ ['//# sourceMappingURL");
+  // Anchored on the array literal itself rather than on the concatenation in
+  // front of it: responses differ in whether a space follows the `+`.
+  const from = bootstrap.indexOf("['//# sourceMappingURL");
   const to = bootstrap.indexOf("].join('\\n')", from);
   if (from < 0 || to < 0) throw new Error('could not isolate the interpreter string array');
-  const interpreter = evaluateLiteral(bootstrap.slice(from + 2, to + 1)).join('\n');
+  const interpreter = evaluateLiteral(bootstrap.slice(from, to + 1)).join('\n');
 
   // The program is a string literal, `var p = '...'`, in a separate script.
+  // Matched as a literal, quote to quote, because the statement after it is not
+  // always on a line of its own: cutting at the next semicolon can overshoot by
+  // thousands of characters.
   const loader = scripts.find((s) => /var\s+p\s*=\s*'/.test(s));
   if (!loader) throw new Error('no program script found (var p = ...)');
-  const program = evaluateLiteral(`(${/var\s+p\s*=\s*([\s\S]*?);\n/.exec(loader)[1]})`);
+  const literal = /var\s+p\s*=\s*('(?:[^'\\]|\\.)*')/.exec(loader);
+  if (!literal) throw new Error('could not isolate the program string literal');
+  const program = evaluateLiteral(`(${literal[1]})`);
 
   return { interpreter, program };
 }

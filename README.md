@@ -11,8 +11,9 @@ that machine apart and answers three questions:
 - **how the VM is built**: its dispatch, opcodes, registers, cipher and self-defence
 - **how the token is generated**: what goes into `SG_SS`, field by field, and how it is assembled
 
-Everything runs offline against a capture you make yourself. No Google code is redistributed
-here, and none of these tools solve the challenge.
+The analysis runs offline against a capture you make yourself, and part 1 ships a helper that
+fetches that capture for you. No Google code is redistributed here, and none of these tools
+solve the challenge.
 
 ## Articles
 
