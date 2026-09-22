@@ -18,7 +18,7 @@ solve the challenge.
 ## Articles
 
 1. A quick analysis to identify which browser signals are being collected: https://igorkozlowski.substack.com/p/google-searchguard-anti-bot-system
-
+2. Google SearchGuard: Reversing the Challenge VM from Scratch: https://igorkozlowski.substack.com/p/google-searchguard-reversing-the
 
 ## Code
 
