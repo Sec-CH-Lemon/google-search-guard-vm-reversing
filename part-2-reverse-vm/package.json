@@ -1,0 +1,32 @@
+{
+  "name": "searchguard-vm-reversing",
+  "version": "1.1.0",
+  "description": "Tools accompanying Part 2: reverse engineering the Google SearchGuard interpreter",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": "^20.19.0 || ^22.13.0 || >=24.0.0"
+  },
+  "scripts": {
+    "build-id": "node build-compare.cjs captures/response.html",
+    "disasm": "npm run disasm-profile",
+    "trace": "npm run opcode-trace",
+    "deobfuscate": "node vm-deobfuscate.cjs",
+    "readable": "node vm-deobfuscate.cjs --no-rename --out=vm-readable.js",
+    "equivalence": "node run-readable-vm.cjs",
+    "pristine": "node pristine-tap.cjs --html=response.html",
+    "recover": "node record-recover.cjs --html=response.html",
+    "handlers": "node dump-handlers.cjs --html=response.html --readable=vm-readable.js --stores=k:e:u,I:e:u,w:e:u --out=records/handlers.json",
+    "layouts": "node opcode-table.cjs --handlers=records/handlers.json",
+    "roles": "node opcode-roles.cjs --handlers=records/handlers.json --pc=389",
+    "opcode-trace": "node opcode-trace.cjs --html=response.html --readable=vm-readable.js",
+    "cipher": "node cipher-params.cjs --html=response.html --readable=vm-readable.js",
+    "profile": "node build-profile.cjs --html=response.html --out=profile.json",
+    "disasm-profile": "node static-disasm.cjs --profile=profile.json"
+  },
+  "dependencies": {
+    "acorn": "^8.17.0",
+    "jsdom": "^29.1.1",
+    "prettier": "^3.4.2"
+  }
+}
