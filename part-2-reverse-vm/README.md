@@ -188,4 +188,4 @@ The tooling is MIT licensed. That license does not apply to captured Google
 code or to artifacts derived from a supplied response.
 
 <!-- Keep this slug when publishing Part 2, or update this single reference. -->
-[article]: https://igorkozlowski.substack.com/p/google-searchguard-vm-reversing
+[article]: https://igorkozlowski.substack.com/p/google-searchguard-reversing-the

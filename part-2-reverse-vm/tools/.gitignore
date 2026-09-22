@@ -1,0 +1,24 @@
+node_modules/
+
+# Captured Google responses and anything derived from them stay local.
+captures/*
+!captures/.gitkeep
+challenge.html
+lifted-source/*
+!lifted-source/.gitkeep
+
+# generated output
+*.json
+!package.json
+!package-lock.json
+static-disassembly.txt
+# the disassembler names its listing after the capture, so the bare name is not
+# enough — and a listing IS derived from Google's bytecode
+static-disassembly-*.txt
+trace-disassembly-*.txt
+vm-deobfuscated.js
+vm-deobfuscation-report.txt
+
+# build profiles and recovered records are derived from a capture
+records/*
+!records/.gitkeep
